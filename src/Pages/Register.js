@@ -1,126 +1,141 @@
-import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import logoImg from '../img/logo.png'; 
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { countries } from 'countries-list';
 
-const RegisterForm = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [universityName, setUniversityName] = useState('');
-  const [country, setCountry] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+// TODO remove, this demo shouldn't need to reset the theme.
 
-  const handleFirstNameChange = (event) => {
-    setFirstName(event.target.value);
-  };
+const defaultTheme = createTheme();
 
-  const handleLastNameChange = (event) => {
-    setLastName(event.target.value);
-  };
+function register() {
 
-  const handleUniversityNameChange = (event) => {
-    setUniversityName(event.target.value);
-  };
-
-  const handleCountryChange = (event) => {
-    setCountry(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
+  const countryOptions = Object.keys(countries)
+    .map((countryCode) => ({
+      value: countryCode,
+      label: countries[countryCode].name,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label)); 
+  
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Perform registration logic here (e.g., API request, storing user data)
-
-    // Reset the form after registration
-    setFirstName('');
-    setLastName('');
-    setUniversityName('');
-    setCountry('');
-    setEmail('');
-    setPassword('');
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
   };
 
   return (
-    <Container>
-      <Row className="justify-content-center">
-        <Col xs={10} sm={8} md={6}>
-          <h2>Register</h2>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="firstName">
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter first name"
-                value={firstName}
-                onChange={handleFirstNameChange}
-              />
-            </Form.Group>
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+        <div>
+          <img src={logoImg} alt="Logo" style={{ width: '200px', height: 'auto' }}/>
+        </div>
 
-            <Form.Group controlId="lastName">
-              <Form.Label>Last Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter last name"
-                value={lastName}
-                onChange={handleLastNameChange}
-              />
-            </Form.Group>
+          <Typography component="h1" variant="h5">
+            Unipal <b>register</b> form:
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TextField
+              id="demo-helper-text-aligned"
+              label="First name"
+              style={{ marginRight: '5px' }}
+              required
+            />
 
-            <Form.Group controlId="universityName">
-              <Form.Label>University Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter university name"
-                value={universityName}
-                onChange={handleUniversityNameChange}
-              />
-            </Form.Group>
+            <TextField
+              id="demo-helper-text-aligned-no-helper"
+              label="Last name"
+              style={{ marginLeft: '5px' }}
+              required
+            />
+          </div>
 
-            <Form.Group controlId="country">
-              <Form.Label>Country</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter country"
-                value={country}
-                onChange={handleCountryChange}
-              />
-            </Form.Group>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="University name"
+              autoComplete="email"
+              autoFocus
+            />
 
-            <Form.Group controlId="email">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={handleEmailChange}
-              />
-            </Form.Group>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Country of origin"
+              autoFocus
+              select
+            >
+            {countryOptions.map((country) => (
+              <MenuItem key={country.value} value={country.value}>
+                {country.label}
+              </MenuItem>
+            ))}
+            </TextField>
 
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </Form.Group>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
 
-            <Button variant="primary" type="submit">
-              Register
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign up
             </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+            <Grid container>
+              <Grid item>
+                <Link href="/login" variant="body2">
+                  {"Already registered? Login"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
-};
+}
 
-export default RegisterForm;
+export default register;
