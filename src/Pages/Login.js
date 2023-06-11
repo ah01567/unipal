@@ -40,7 +40,7 @@ function login() {
           <img src={logoImg} alt="Logo" style={{ width: '200px', height: 'auto' }}/>
         </div>
           <Typography component="h1" variant="h5">
-            Unipal <b>login</b> form:
+             <b>Login</b> form:
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField

@@ -51,7 +51,7 @@ function register() {
         </div>
 
           <Typography component="h1" variant="h5">
-            Unipal <b>register</b> form:
+             <b>Register</b> form:
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             
