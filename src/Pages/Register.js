@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './Firebase';
+import { auth } from './Firebasee';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';

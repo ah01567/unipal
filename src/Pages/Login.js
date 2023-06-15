@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
-import { auth } from './Firebase';
+import { auth } from './Firebasee';
+import useAuth from "./CurrentUser";
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,6 +20,7 @@ const defaultTheme = createTheme();
 
 function Login() {
 
+  const { currentUser } = useAuth();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -32,7 +34,6 @@ function Login() {
         // Signed in
         const user = userCredential.user;
         navigate("/")
-        console.log(user);
     })
     .catch((error) => {
        if (error.code === "auth/user-not-found") {
