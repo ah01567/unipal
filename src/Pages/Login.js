@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -14,7 +14,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const defaultTheme = createTheme();
 
-function login() {
+function Login() {
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -51,6 +55,7 @@ function login() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange={(e)=>setEmail(e.target.value)}
               autoFocus
             />
             <TextField
@@ -62,6 +67,7 @@ function login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e)=>setPassword(e.target.value)}
             />
             <Button
               type="submit"
@@ -90,4 +96,4 @@ function login() {
   );
 }
 
-export default login;
+export default Login;

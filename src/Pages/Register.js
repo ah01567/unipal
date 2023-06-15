@@ -1,4 +1,7 @@
-import * as React from 'react';
+import React, {useState} from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './Firebase';
+import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -16,7 +19,18 @@ import { countries } from 'countries-list';
 
 const defaultTheme = createTheme();
 
-function register() {
+function Register() {
+
+  const navigate = useNavigate(); 
+
+  const [fname, seFname] = useState();
+  const [lname, setLname] = useState();
+  const [uni, setUni] = useState();
+  const [country, setCountry] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const [error, setError] = useState();
 
   const countryOptions = Object.keys(countries)
     .map((countryCode) => ({
@@ -25,14 +39,39 @@ function register() {
     }))
     .sort((a, b) => a.label.localeCompare(b.label)); 
   
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    const registerSubmit = async (e) => {
+      e.preventDefault()
+     
+      await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            //const uid = user.uid;
+            console.log(user);
+            navigate("/")
+
+            // const userRef = ref(db, `Users/${uid}`);
+            // const userData = {
+            //     fname: fname,
+            //     lname: lname, 
+            //     role: role, 
+            //     email: email,
+            //   };
+            //   set(userRef, userData);
+        })
+        .catch((error) => {
+            if(error.code === "auth/email-already-in-use") {
+                 setError("This email is already registered. Please Log in");
+            } else if (error.code === "auth/invalid-email") {
+                 setError("This email address is not valid.");
+             } else if (error.code === "auth/operation-not-allowed") {
+                 setError("Operation not allowed.");
+             } else if (error.code === "auth/weak-password") {
+                 setError("Your password is too weak.");
+             }
+             console.error(error);
+         }
+        );
+      }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -53,7 +92,7 @@ function register() {
           <Typography component="h1" variant="h5">
              <b>Register</b> form:
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={registerSubmit} noValidate sx={{ mt: 1 }}>
             
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <TextField
@@ -103,6 +142,7 @@ function register() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange={(e)=>setEmail(e.target.value)}
               autoFocus
             />
 
@@ -115,6 +155,7 @@ function register() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e)=>setPassword(e.target.value)}
             />
             <Button
               type="submit"
@@ -138,4 +179,4 @@ function register() {
   );
 }
 
-export default register;
+export default Register;
