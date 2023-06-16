@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './Firebasee';
 import { useNavigate } from 'react-router-dom';
+import { ref, set } from "firebase/database";
+import { db } from './Firebasee';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -23,7 +25,7 @@ function Register() {
 
   const navigate = useNavigate(); 
 
-  const [fname, seFname] = useState();
+  const [fname, setFname] = useState();
   const [lname, setLname] = useState();
   const [uni, setUni] = useState();
   const [country, setCountry] = useState();
@@ -37,7 +39,11 @@ function Register() {
       value: countryCode,
       label: countries[countryCode].name,
     }))
-    .sort((a, b) => a.label.localeCompare(b.label)); 
+    .sort((a, b) => a.label.localeCompare(b.label));
+
+    const handleCountryChange = (event) => {
+      setCountry(event.target.value);
+    };
   
     const registerSubmit = async (e) => {
       e.preventDefault()
@@ -45,18 +51,19 @@ function Register() {
       await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            //const uid = user.uid;
+            const uid = user.uid;
             console.log(user);
             navigate("/")
-
-            // const userRef = ref(db, `Users/${uid}`);
-            // const userData = {
-            //     fname: fname,
-            //     lname: lname, 
-            //     role: role, 
-            //     email: email,
-            //   };
-            //   set(userRef, userData);
+            console.log(uid);
+            const userRef = ref(db, `Users/${uid}`);
+            const userData = {
+                fname: fname,
+                lname: lname, 
+                uni: uni,
+                country: country,
+                email: email,
+              };
+              set(userRef, userData);
         })
         .catch((error) => {
             if(error.code === "auth/email-already-in-use") {
@@ -99,6 +106,7 @@ function Register() {
               id="demo-helper-text-aligned"
               label="First name"
               style={{ marginRight: '5px' }}
+              onChange={(e)=>setFname(e.target.value)}
               required
             />
 
@@ -106,6 +114,7 @@ function Register() {
               id="demo-helper-text-aligned-no-helper"
               label="Last name"
               style={{ marginLeft: '5px' }}
+              onChange={(e)=>setLname(e.target.value)}
               required
             />
           </div>
@@ -115,23 +124,25 @@ function Register() {
               required
               fullWidth
               label="University name"
-              autoComplete="email"
+              onChange={(e)=>setUni(e.target.value)}
               autoFocus
             />
 
-            <TextField
+              <TextField
               margin="normal"
               required
               fullWidth
               label="Country of origin"
               autoFocus
               select
+              value={country}
+              onChange={handleCountryChange}
             >
-            {countryOptions.map((country) => (
-              <MenuItem key={country.value} value={country.value}>
-                {country.label}
-              </MenuItem>
-            ))}
+              {countryOptions.map((country) => (
+                <MenuItem key={country.value} value={country.value}>
+                  {country.label}
+                </MenuItem>
+              ))}
             </TextField>
 
             <TextField
@@ -157,6 +168,7 @@ function Register() {
               autoComplete="current-password"
               onChange={(e)=>setPassword(e.target.value)}
             />
+            {error && <div style={{color:'red'}}>{error}</div>}
             <Button
               type="submit"
               fullWidth
