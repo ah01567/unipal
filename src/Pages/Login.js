@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from './Firebasee';
-import useAuth from "./CurrentUser";
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -20,7 +19,6 @@ const defaultTheme = createTheme();
 
 function Login() {
 
-  const { currentUser } = useAuth();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -32,7 +30,6 @@ function Login() {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
         // Signed in
-        const user = userCredential.user;
         navigate("/")
     })
     .catch((error) => {
@@ -87,6 +84,7 @@ function Login() {
               autoComplete="current-password"
               onChange={(e)=>setPassword(e.target.value)}
             />
+            {error && <div style={{color:'red'}}>{error}</div>}
             <Button
               type="submit"
               fullWidth
