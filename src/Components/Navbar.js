@@ -30,7 +30,7 @@ function NavBar() {
 
             <Nav.Link href="/">Feedback</Nav.Link>
 
-            <NavDropdown title="Account" id="navbarScrollingDropdown">
+            <NavDropdown title="User" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Settings</NavDropdown.Item>
               <NavDropdown.Item href="#action4">Contact Us</NavDropdown.Item>
               <NavDropdown.Divider />
