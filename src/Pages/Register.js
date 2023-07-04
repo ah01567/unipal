@@ -34,6 +34,7 @@ function Register() {
 
   const [error, setError] = useState();
 
+  const defaultCountry = ''
   const countryOptions = Object.keys(countries)
     .map((countryCode) => ({
       value: countryCode,
@@ -135,7 +136,7 @@ function Register() {
               label="Country of origin"
               autoFocus
               select
-              value={country}
+              value={country || defaultCountry}
               onChange={handleCountryChange}
             >
               {countryOptions.map((country) => (

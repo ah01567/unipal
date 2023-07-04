@@ -1,8 +1,8 @@
 import React from 'react';
+import Navbar from '../Components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import useAuth from "./CurrentUser";
-import {  signOut } from "firebase/auth";
-import { auth } from '../Pages/Firebasee';
+
 
 function Home() {
   const { currentUser } = useAuth();
@@ -14,19 +14,13 @@ function Home() {
     return null;
   }
 
-  const handleLogout = () => {               
-    signOut(auth).then(() => {
-    // Sign-out successful.
-        console.log("Signed out successfully")
-    }).catch((error) => {
-        console.log(error);
-    });
-}
 
   return (
     <div>
-      Home page
-      <button onClick={handleLogout}>Logout</button>
+      <Navbar />
+      <div>
+        Home page
+      </div>
     </div>
   );
 }
