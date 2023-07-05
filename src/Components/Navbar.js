@@ -28,6 +28,8 @@ function NavBar() {
 
             <Nav.Link href="/">Pals</Nav.Link>
 
+            <Nav.Link href="/">Chat</Nav.Link>
+
             <Nav.Link href="/">Feedback</Nav.Link>
 
             <NavDropdown title="User" id="navbarScrollingDropdown">
