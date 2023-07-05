@@ -28,7 +28,7 @@ function NavBar() {
 
             <Nav.Link href="/">Home</Nav.Link>
 
-            <Nav.Link href="/">Pals</Nav.Link>
+            <Nav.Link href="/pals">Pals</Nav.Link>
 
             <Nav.Link href="/">Chat</Nav.Link>
 

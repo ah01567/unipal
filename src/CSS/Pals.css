@@ -1,0 +1,14 @@
+ .nationalities {
+    margin-top: 15px;
+ }
+ .nationalities h3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+ }
+ .nationalitiesCards {
+    margin-top: 15px;
+    display: flex;
+  }
+  
