@@ -3,6 +3,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { signOut } from "firebase/auth";
 import { auth } from '../Pages/Firebasee';
 
@@ -38,6 +40,11 @@ function NavBar() {
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action5" onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
+
+            <div style={{ color: '#A9A9A9', position: 'absolute', right: 30, fontSize: '26px' }}>
+              <FontAwesomeIcon icon={faBell} />
+            </div>
+
           </Nav>
         </Container>
       </Navbar>
