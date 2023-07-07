@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './Firebasee';
 import { useNavigate } from 'react-router-dom';
-import { get, ref, set, push } from "firebase/database";
+import { ref, set } from "firebase/database";
 import { db } from './Firebasee';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
