@@ -52,18 +52,20 @@ function Pals() {
     <div>
       <Navbar />
       <div className='nationalities'>
-      <h3>Choose a nationality:</h3>
-      <div className='nationalitiesCards'>
-        {nationalities.map((nationality, index) => (
-          <Card key={index} style={{ width: '13rem', height: '13rem', marginLeft: '10px', backgroundImage: 'url("https://static.vecteezy.com/system/resources/thumbnails/007/045/920/small/flag-of-union-jack-uk-england-united-kingdom-flag-illustration-flag-of-great-britain-3d-illustration-3d-illustration-waving-colorful-flag-of-great-britain-free-vector.jpg")', backgroundSize: 'cover' }}>
-            <Card.Body>
-              <Card.Title style={{ background: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <b>{nationality.country}</b>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-        ))}
-      </div>
+        <h3>Choose a nationality:</h3>
+        <div className='nationalitiesCards'>
+          {nationalities.map((nationality, index) => (
+            <div className='cardWrapper' key={index}>
+              <Card style={{ width: '13rem', height: '13rem', marginLeft: '10px', backgroundImage: 'url("")', backgroundSize: 'cover' }}>
+                <Card.Body>
+                  <Card.Title style={{ background: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <b>{nationality.country}</b>
+                  </Card.Title>
+                </Card.Body>
+              </Card>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
