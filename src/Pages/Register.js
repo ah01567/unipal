@@ -56,7 +56,7 @@ function Register() {
             console.log(user);
             navigate("/")
             console.log(uid);
-            // Save registered users in Users Database
+            // STEP01: Save registered users in Users Database
             const userRef = ref(db, `Users/${uid}`);
             const userData = {
                 fname: fname,
@@ -66,37 +66,14 @@ function Register() {
                 email: email,
             };
             set(userRef, userData);
-            // Save the user's nationality in 'Nationalities' database
-            const nationalitiesDB = ref(db, 'Nationalities');
-            const nationality = { country: country };
-            
-            // Retrieve existing nationalities
-            get(nationalitiesDB).then((snapshot) => {
-              if (snapshot.exists()) {
-                const existingNationalities = snapshot.val();
-                
-                // Check if the new nationality already exists
-                const isExistingNationality = Object.values(existingNationalities).some(
-                  (existingNationality) => existingNationality.country === country
-                );
-                
-                if (!isExistingNationality) {
-                  // Push the new nationality to the database
-                  const newNationalityRef = push(nationalitiesDB);
-                  set(newNationalityRef, nationality);
-                } else {
-                  // Nationality already exists, handle accordingly
-                  console.log('Nationality already exists.');
-                }
-              } else {
-                // No existing nationalities found, push the new nationality
-                const newNationalityRef = push(nationalitiesDB);
-                set(newNationalityRef, nationality);
-              }
-            }).catch((error) => {
-              // Handle any errors
-              console.error('Error retrieving nationalities:', error);
-            });
+            // STEP02: Save the user's data under Uni -> Country -> UserID
+              const userID = auth.currentUser.uid;
+              const userUniRef = ref(db, `Universities/${uni}/${country}/${userID}`);
+              const userFullName = {
+                fname: fname,
+                lname: lname,
+              };
+              set(userUniRef, userFullName);       
         })
         .catch((error) => {
             if(error.code === "auth/email-already-in-use") {
