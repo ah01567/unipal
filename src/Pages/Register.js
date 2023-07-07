@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './Firebasee';
 import { useNavigate } from 'react-router-dom';
-import { ref, set } from "firebase/database";
+import { get, ref, set, push } from "firebase/database";
 import { db } from './Firebasee';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -56,6 +56,7 @@ function Register() {
             console.log(user);
             navigate("/")
             console.log(uid);
+            // Save registered users in Users Database
             const userRef = ref(db, `Users/${uid}`);
             const userData = {
                 fname: fname,
@@ -63,8 +64,39 @@ function Register() {
                 uni: uni,
                 country: country,
                 email: email,
-              };
-              set(userRef, userData);
+            };
+            set(userRef, userData);
+            // Save the user's nationality in 'Nationalities' database
+            const nationalitiesDB = ref(db, 'Nationalities');
+            const nationality = { country: country };
+            
+            // Retrieve existing nationalities
+            get(nationalitiesDB).then((snapshot) => {
+              if (snapshot.exists()) {
+                const existingNationalities = snapshot.val();
+                
+                // Check if the new nationality already exists
+                const isExistingNationality = Object.values(existingNationalities).some(
+                  (existingNationality) => existingNationality.country === country
+                );
+                
+                if (!isExistingNationality) {
+                  // Push the new nationality to the database
+                  const newNationalityRef = push(nationalitiesDB);
+                  set(newNationalityRef, nationality);
+                } else {
+                  // Nationality already exists, handle accordingly
+                  console.log('Nationality already exists.');
+                }
+              } else {
+                // No existing nationalities found, push the new nationality
+                const newNationalityRef = push(nationalitiesDB);
+                set(newNationalityRef, nationality);
+              }
+            }).catch((error) => {
+              // Handle any errors
+              console.error('Error retrieving nationalities:', error);
+            });
         })
         .catch((error) => {
             if(error.code === "auth/email-already-in-use") {
@@ -129,7 +161,7 @@ function Register() {
               autoFocus
             />
 
-              <TextField
+            <TextField
               margin="normal"
               required
               fullWidth
@@ -140,7 +172,7 @@ function Register() {
               onChange={handleCountryChange}
             >
               {countryOptions.map((country) => (
-                <MenuItem key={country.value} value={country.value}>
+                <MenuItem key={country.value} value={country.label}>
                   {country.label}
                 </MenuItem>
               ))}
