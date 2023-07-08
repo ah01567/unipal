@@ -13,9 +13,11 @@
    overflow-x: auto; /* Enable horizontal scrolling */
    flex-wrap: nowrap; /* Prevent cards from wrapping to the next line */
  }
- 
  .nationalitiesCards > .cardWrapper {
    flex: 0 0 auto; /* Maintain original card width */
    margin-right: 5px; /* Add spacing between cards */
+ }
+ .card {
+  border-radius: 20px;
  }
   
