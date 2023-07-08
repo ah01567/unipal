@@ -8,40 +8,40 @@ import '../CSS/Pals.css';
 import Card from 'react-bootstrap/Card';
 
 function Pals() {
-  const { currentUser } = useAuth();
+  const { currentUser, currentUserID } = useAuth();
   const navigate = useNavigate();
 
-  const nationalitiesDB = ref(db, 'Nationalities');
+  // Fetch the currentUser's university 
   const [nationalities, setNationalities] = useState([]);
+  const UsersDB = ref(db, `Users/${currentUserID}`);
 
-  // Retrieve Existing Nationalities from the database
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const snapshot = await get(nationalitiesDB);
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          const nationalityList = Object.values(data);
+useEffect(() => {
+  const fetchUniversityAndNationalities = async () => {
+    try {
+      const snapshot = await get(UsersDB);
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        const university = userData.uni; // Assuming the university name is stored in a property called 'uni' in the database;
+
+        const universitiesDB = ref(db, `Universities/${university}`);
+        const snapshotNationalities = await get(universitiesDB);
+
+        if (snapshotNationalities.exists()) {
+          const data = snapshotNationalities.val();
+          const nationalityList = Object.keys(data);
           setNationalities(nationalityList);
         } else {
           // No nationalities found
           setNationalities([]);
         }
-      } catch (error) {
-        console.error('Error retrieving nationalities:', error);
       }
-    };
+    } catch (error) {
+      console.error('Error retrieving university and nationalities:', error);
+    }
+  };
 
-    // Subscribe to real-time changes in the database
-    const unsubscribe = onValue(nationalitiesDB, () => {
-      getData();
-    });
-
-    // Clean up the subscription
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  fetchUniversityAndNationalities();
+}, [UsersDB]); // Specify UsersDB as a dependency
 
   if (!currentUser) {
     // Redirect to login page if currentUser doesn't exist
@@ -59,7 +59,7 @@ function Pals() {
               <Card style={{ width: '13rem', height: '13rem', marginLeft: '10px', backgroundImage: 'url("")', backgroundSize: 'cover' }}>
                 <Card.Body>
                   <Card.Title style={{ background: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <b>{nationality.country}</b>
+                    <b>{nationality}</b>
                   </Card.Title>
                 </Card.Body>
               </Card>
