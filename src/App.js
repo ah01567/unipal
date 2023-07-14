@@ -4,6 +4,7 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import Pals from './Pages/Pals';
+import Profile from './Pages/Profile';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/pals" element={<Pals />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

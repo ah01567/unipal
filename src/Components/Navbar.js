@@ -35,10 +35,10 @@ function NavBar() {
             <Nav.Link href="/">Feedback</Nav.Link>
 
             <NavDropdown title="User" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Settings</NavDropdown.Item>
+              <NavDropdown.Item href="/profile">Profile settings</NavDropdown.Item>
               <NavDropdown.Item href="#action4">Contact Us</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5" onClick={handleLogout}>Logout</NavDropdown.Item>
+              <NavDropdown.Item href="/login" onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
 
             <div style={{ color: '#A9A9A9', position: 'absolute', right: 30, fontSize: '26px' }}>
