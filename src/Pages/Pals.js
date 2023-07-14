@@ -152,7 +152,7 @@ const handlePreviousCard = () => {
                           </div>
                           <div className="flex-grow-1 ms-3">
                             <MDBCardTitle>{displayedUser[activeCardIndex].fname} {displayedUser[activeCardIndex].lname}</MDBCardTitle>
-                            <MDBCardText>University of Surrey</MDBCardText>
+                            <MDBCardText>{selectedUni}</MDBCardText>
 
                             <div className="d-flex justify-content-start rounded-3 p-2 mb-2" style={{ backgroundColor: '#efefef' }}>
                               <div>
